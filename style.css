@@ -5,8 +5,8 @@
 
 /* ── Tokens ── */
 :root {
-  --bg: #353935;
-  --bg-mid: #070707;
+  --bg: #1a1612;
+  --bg-mid: #0f0c0a;
   --bg-card: rgba(255, 255, 255, 0.025);
   --gold: #c9956a;
   --gold-light: #e8c4a4;
@@ -32,7 +32,7 @@
 }
 html {
   scroll-behavior: smooth;
-  font-size: 16px;
+  font-size: 18px;
 }
 body {
   background: var(--bg);
@@ -109,7 +109,7 @@ nav {
 }
 nav.scrolled {
   padding: 16px 60px;
-  background: rgba(12, 8, 6, 0.88);
+  background: rgba(26, 22, 18, 0.92);
   backdrop-filter: blur(28px) saturate(180%);
   border-bottom-color: var(--border);
 }
@@ -222,12 +222,12 @@ nav.scrolled {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: #000;
+  background: #0a0806;
 }
 
 #hero-globe-canvas {
   position: absolute;
-  right: auto;
+  left: auto;
   right: 10%;
   top: 50%;
   transform: translateY(-50%);
@@ -235,7 +235,7 @@ nav.scrolled {
   height: 54vw;
   max-width: 760px;
   max-height: 760px;
-  opacity: 0.55;
+  opacity: 0.82;
   z-index: 1;
 }
 
@@ -430,7 +430,7 @@ section {
 
 /* ════════════ DESTINATIONS ════════════ */
 #destinations {
-  background: #000;
+  background: #100e0b;
   padding-bottom: 100px;
 }
 
@@ -750,7 +750,7 @@ section {
 
 /* ════════════ SERVICES ════════════ */
 #services {
-  background: #000;
+  background: #100e0b;
 }
 .services-header {
   margin-bottom: 64px;
@@ -842,7 +842,7 @@ section {
 
 /* ════════════ HOW IT WORKS ════════════ */
 #how-it-works {
-  background: var(--bg);
+  background: #0f0d0b;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
@@ -919,7 +919,7 @@ section {
 
 /* ════════════ TRUST ════════════ */
 #trust {
-  background: #000;
+  background: #100e0b;
   overflow: hidden;
 }
 .trust-grid-bg {
@@ -1195,7 +1195,7 @@ section {
   cursor: none;
 }
 .form-select option {
-  background: #000;
+  background: #100e0b;
 }
 .form-textarea {
   resize: none;
@@ -1226,7 +1226,7 @@ section {
 
 /* ════════════ FOOTER ════════════ */
 footer {
-  background: #000;
+  background: #0a0806;
   border-top: 1px solid var(--border);
   padding: 76px 60px 44px;
 }

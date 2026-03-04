@@ -135,7 +135,8 @@ const ISO_NUMERIC = {
 /* Reverse map: numericId → destination name */
 const NUMERIC_TO_NAME = {};
 Object.entries(DESTINATIONS).forEach(([name, d]) => {
-  const num = ISO_NUMERIC[d.code];
+  // Normalize numeric codes so they match TopoJSON ids (no leading zeros).
+  const num = ISO_NUMERIC[d.code] && String(parseInt(ISO_NUMERIC[d.code], 10));
   if (num) NUMERIC_TO_NAME[num] = name;
 });
 
@@ -304,8 +305,8 @@ let globeRotation = [0, -20, 0];
 
     /* Outer glow */
     const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 1.2);
-    grd.addColorStop(0, "rgba(201,149,106,0.07)");
-    grd.addColorStop(0.6, "rgba(201,149,106,0.02)");
+    grd.addColorStop(0, "rgba(201,149,106,0.18)");
+    grd.addColorStop(0.6, "rgba(201,149,106,0.06)");
     grd.addColorStop(1, "transparent");
     ctx.beginPath();
     ctx.arc(cx, cy, r * 1.2, 0, Math.PI * 2);
@@ -359,7 +360,7 @@ let globeRotation = [0, -20, 0];
         const py = cy + oy * r;
         const visible = Math.cos(angle + ox * 2.5) > -0.2;
         if (!visible) continue;
-        const opacity = 0.25 + 0.35 * Math.cos(angle + ox * 2);
+        const opacity = 0.5 + 0.45 * Math.cos(angle + ox * 2);
         ctx.beginPath();
         ctx.arc(px, py, 1.4, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(201,149,106,${Math.max(0, opacity).toFixed(2)})`;
@@ -375,7 +376,7 @@ let globeRotation = [0, -20, 0];
     ctx.save();
     ctx.translate(px2, py2);
     ctx.rotate(pa + 0.8);
-    ctx.fillStyle = "rgba(201,149,106,0.65)";
+    ctx.fillStyle = "rgba(201,149,106,0.95)";
     ctx.beginPath();
     ctx.moveTo(0, -5);
     ctx.lineTo(3, 2);
@@ -516,8 +517,14 @@ function buildD3Scene() {
       const name = NUMERIC_TO_NAME[String(d.id)];
 
       if (!name) {
-        // Country not in curated list — show a generic enquiry card
-        showGenericTooltip(d);
+        // Country not in curated list — still highlight it + show a generic enquiry card
+        const centroid = d3.geoCentroid(d);
+        setHighlightByNumericId(String(d.id));
+        if (currentView === "globe") {
+          rotateTo([-centroid[0], -centroid[1], 0], () => showGenericTooltip(d));
+        } else {
+          showGenericTooltip(d);
+        }
         return;
       }
 
@@ -642,7 +649,8 @@ function rotateTo(target, callback) {
       requestAnimationFrame(step);
     } else {
       if (callback) callback();
-      setTimeout(startAutoRotate, 3000);
+      // Resume rotation shortly after landing (no "freeze" on the country).
+      setTimeout(startAutoRotate, 350);
     }
   }
   requestAnimationFrame(step);
@@ -810,7 +818,8 @@ btnMap.addEventListener("click", () => transitionTo("map"));
 function showTooltip(name) {
   const d = DESTINATIONS[name];
   if (!d) return;
-  tooltipFlag.textContent = d.flag;
+  // No emoji/flag shown in the tooltip header.
+  tooltipFlag.textContent = "";
   tooltipCountry.textContent = name;
   tooltipSpecialist.textContent = d.specialist;
   tooltipDesc.textContent = d.desc;
@@ -822,8 +831,12 @@ function showTooltip(name) {
 // For countries not in our curated list — show a friendly get-in-touch card
 function showGenericTooltip(feature) {
   const id = String(feature.id);
-  const countryName = NUMERIC_TO_COUNTRY_NAME[id] || "This Destination";
-  tooltipFlag.textContent = "✈️";
+  // Prefer our curated label; otherwise fall back to the name provided
+  // by the TopoJSON data, so every country on the map uses its real name.
+  const countryName =
+    NUMERIC_TO_COUNTRY_NAME[id] || feature.properties?.name || "This Destination";
+  // No emoji/flag shown in the tooltip header.
+  tooltipFlag.textContent = "";
   tooltipCountry.textContent = countryName;
   tooltipSpecialist.textContent = "Patricia Kho · Travel Specialist";
   tooltipDesc.textContent =
@@ -850,12 +863,23 @@ function setHighlight(name) {
   currentHighlight = name;
   const data = DESTINATIONS[name];
   if (!data) return;
-  const num = ISO_NUMERIC[data.code];
+  const num =
+    ISO_NUMERIC[data.code] && String(parseInt(ISO_NUMERIC[data.code], 10));
   if (!g) return;
   g.selectAll(".country-path")
     .classed("highlighted", (d) => String(d.id) === num)
     .classed("dimmed", (d) => String(d.id) !== num);
 }
+
+function setHighlightByNumericId(numericId) {
+  currentHighlight = numericId;
+  if (!g) return;
+  const id = String(numericId);
+  g.selectAll(".country-path")
+    .classed("highlighted", (d) => String(d.id) === id)
+    .classed("dimmed", (d) => String(d.id) !== id);
+}
+
 function clearHighlight() {
   currentHighlight = null;
   if (!g) return;
@@ -952,12 +976,11 @@ document.addEventListener("click", (e) => {
   // Close autocomplete when clicking outside the search wrapper
   if (!e.target.closest(".dest-search-wrap")) acDrop.classList.remove("open");
 
-  // Hide tooltip only when clicking outside the stage AND outside the tooltip itself.
-  // Clicks on SVG country paths call stopPropagation(), so they never reach here.
-  // This handler catches clicks on the page background, other sections, etc.
-  const inStage = e.target.closest("#globe-map-stage");
+  // Click-away: hide the tooltip when clicking anywhere except the tooltip itself.
+  // Country clicks call stopPropagation(), so they won't immediately close it.
+  // This allows clicking on the "ocean"/background of the globe/map to dismiss.
   const inTooltip = e.target.closest("#map-tooltip");
-  if (!inStage && !inTooltip) hideTooltip();
+  if (!inTooltip) hideTooltip();
 });
 
 /* ══════════════════════ FALLBACK (if no CDN) ══════════════════════ */
