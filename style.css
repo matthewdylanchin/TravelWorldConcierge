@@ -229,7 +229,7 @@ nav.scrolled {
 #hero-globe-canvas {
   position: absolute;
   left: auto;
-  right: 10%;
+  right: 5%;
   top: 50%;
   transform: translateY(-50%);
   width: 54vw;
