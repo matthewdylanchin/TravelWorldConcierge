@@ -32,7 +32,8 @@
 }
 html {
   scroll-behavior: smooth;
-  font-size: 18px;
+  /* Slightly larger base font to make fine print more legible */
+  font-size: 20px;
 }
 body {
   background: var(--bg);

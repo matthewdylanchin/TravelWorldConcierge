@@ -1,522 +1,815 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Travel World Concierge — Your Ultimate Travel Advisor</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Travel World Concierge — Your Ultimate Travel Advisor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Custom cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
 
-  <!-- Custom cursor -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursor-ring"></div>
+    <!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
+    <nav id="main-nav">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-mark">
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 22 22"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1"
+          >
+            <circle cx="11" cy="11" r="9" />
+            <ellipse cx="11" cy="11" rx="5" ry="9" />
+            <line x1="2" y1="11" x2="20" y2="11" />
+            <line x1="4" y1="6" x2="18" y2="6" />
+            <line x1="4" y1="16" x2="18" y2="16" />
+          </svg>
+        </div>
+        <div class="nav-logo-text">
+          <span class="nav-brand">Travelworld</span>
+          <span class="nav-sub">Concierge</span>
+        </div>
+      </a>
 
-  <!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
-  <nav id="main-nav">
-    <a href="#" class="nav-logo">
-      <div class="nav-logo-mark">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1">
-          <circle cx="11" cy="11" r="9"/>
-          <ellipse cx="11" cy="11" rx="5" ry="9"/>
-          <line x1="2" y1="11" x2="20" y2="11"/>
-          <line x1="4" y1="6" x2="18" y2="6"/>
-          <line x1="4" y1="16" x2="18" y2="16"/>
-        </svg>
+      <ul class="nav-links">
+        <li><a href="#destinations">Destinations</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#how-it-works">Process</a></li>
+        <li><a href="#trust">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <a href="#contact" class="nav-cta">Plan My Journey</a>
+    </nav>
+
+    <!-- ═══════════════════════════════ HERO ══════════════════════════════ -->
+    <section id="hero">
+      <div class="hero-bg"></div>
+      <canvas id="hero-globe-canvas"></canvas>
+
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-line"></span>
+          Luxury Travel Concierge — Est. Kuching, Malaysia
+        </div>
+        <h1 class="hero-title">
+          Your Ultimate<br />
+          <em>Travel Advisor</em>
+        </h1>
+        <p class="hero-sub">
+          Bespoke journeys, personally curated across the globe.<br />
+          Where every detail is handled, and every moment, extraordinary.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-primary">Start Planning</a>
+          <a href="#destinations" class="btn-secondary">Explore Destinations</a>
+        </div>
       </div>
-      <div class="nav-logo-text">
-        <span class="nav-brand">Travelworld</span>
-        <span class="nav-sub">Concierge</span>
+
+      <div class="hero-scroll-hint">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
       </div>
-    </a>
+    </section>
 
-    <ul class="nav-links">
-      <li><a href="#destinations">Destinations</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#how-it-works">Process</a></li>
-      <li><a href="#trust">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+    <!-- ═══════════════════════════════ DESTINATIONS ══════════════════════ -->
+    <section id="destinations">
+      <div class="max-container">
+        <div class="dest-header">
+          <div class="dest-header-left">
+            <div class="section-label reveal">Our World</div>
+            <h2 class="section-title reveal">
+              Discover Every<br /><em>Corner</em>
+            </h2>
+            <p class="dest-intro reveal">
+              Hover over any destination. Click to connect with your personal
+              travel specialist.
+            </p>
+          </div>
+          <div class="dest-controls reveal">
+            <div class="dest-search-wrap">
+              <svg
+                class="search-icon"
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <line x1="17" y1="17" x2="22" y2="22" />
+              </svg>
+              <input
+                type="text"
+                class="dest-search"
+                id="dest-search"
+                placeholder="Search destination…"
+                autocomplete="off"
+              />
+              <div class="autocomplete-drop" id="ac-drop"></div>
+            </div>
+            <div class="view-toggle">
+              <button class="view-btn active" id="btn-globe" data-view="globe">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="2" y1="12" x2="22" y2="12" />
+                  <path d="M12 2a15 15 0 010 20M12 2a15 15 0 000 20" />
+                </svg>
+                Globe
+              </button>
+              <button class="view-btn" id="btn-map" data-view="map">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                >
+                  <polygon
+                    points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"
+                  />
+                  <line x1="8" y1="2" x2="8" y2="18" />
+                  <line x1="16" y1="6" x2="16" y2="22" />
+                </svg>
+                Map
+              </button>
+            </div>
+          </div>
+        </div>
 
-    <a href="#contact" class="nav-cta">Plan My Journey</a>
-  </nav>
+        <!-- Globe / Map container -->
+        <div class="globe-map-stage" id="globe-map-stage">
+          <div id="globe-container"></div>
+          <div id="map-tooltip" class="map-tooltip hidden">
+            <button class="tooltip-close" id="tooltip-close">✕</button>
+            <div class="tooltip-flag" id="tooltip-flag"></div>
+            <div class="tooltip-country" id="tooltip-country"></div>
+            <div class="tooltip-specialist" id="tooltip-specialist"></div>
+            <p class="tooltip-desc" id="tooltip-desc"></p>
+            <button class="tooltip-btn" id="tooltip-cta">Plan My Trip →</button>
+          </div>
+        </div>
 
-  <!-- ═══════════════════════════════ HERO ══════════════════════════════ -->
-  <section id="hero">
-    <div class="hero-bg"></div>
-    <canvas id="hero-globe-canvas"></canvas>
-
-    <div class="hero-content">
-      <div class="hero-eyebrow">
-        <span class="eyebrow-line"></span>
-        Luxury Travel Concierge — Est. Kuching, Malaysia
+        <!-- Destination pills -->
+        <div class="dest-pills" id="dest-pills">
+          <button class="dest-pill active" data-code="all">All Regions</button>
+          <button class="dest-pill" data-code="EU">Europe</button>
+          <button class="dest-pill" data-code="AS">Asia Pacific</button>
+          <button class="dest-pill" data-code="ME">Middle East</button>
+          <button class="dest-pill" data-code="AF">Africa</button>
+          <button class="dest-pill" data-code="AM">Americas</button>
+          <button class="dest-pill" data-code="OC">Oceania</button>
+        </div>
       </div>
-      <h1 class="hero-title">
-        Your Ultimate<br>
-        <em>Travel Advisor</em>
-      </h1>
-      <p class="hero-sub">
-        Bespoke journeys, personally curated across the globe.<br>
-        Where every detail is handled, and every moment, extraordinary.
-      </p>
-      <div class="hero-actions">
-        <a href="#contact" class="btn-primary">Start Planning</a>
-        <a href="#destinations" class="btn-secondary">Explore Destinations</a>
-      </div>
-    </div>
+    </section>
 
-    <div class="hero-scroll-hint">
-      <div class="scroll-line"></div>
-      <span>Scroll</span>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════ DESTINATIONS ══════════════════════ -->
-  <section id="destinations">
-    <div class="max-container">
-
-      <div class="dest-header">
-        <div class="dest-header-left">
-          <div class="section-label reveal">Our World</div>
+    <!-- ═══════════════════════════════ SERVICES ══════════════════════════ -->
+    <section id="services">
+      <div class="max-container">
+        <div class="services-header">
+          <div class="section-label reveal">What We Offer</div>
           <h2 class="section-title reveal">
-            Discover Every<br><em>Corner</em>
+            Crafted For Every<br /><em>Journey</em>
           </h2>
-          <p class="dest-intro reveal">Hover over any destination. Click to connect with your personal travel specialist.</p>
-        </div>
-        <div class="dest-controls reveal">
-          <div class="dest-search-wrap">
-            <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="11" cy="11" r="7"/>
-              <line x1="17" y1="17" x2="22" y2="22"/>
-            </svg>
-            <input type="text" class="dest-search" id="dest-search" placeholder="Search destination…" autocomplete="off" />
-            <div class="autocomplete-drop" id="ac-drop"></div>
-          </div>
-          <div class="view-toggle">
-            <button class="view-btn active" id="btn-globe" data-view="globe">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
-              Globe
-            </button>
-            <button class="view-btn" id="btn-map" data-view="map">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-              Map
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Globe / Map container -->
-      <div class="globe-map-stage" id="globe-map-stage">
-        <div id="globe-container"></div>
-        <div id="map-tooltip" class="map-tooltip hidden">
-          <button class="tooltip-close" id="tooltip-close">✕</button>
-          <div class="tooltip-flag" id="tooltip-flag"></div>
-          <div class="tooltip-country" id="tooltip-country"></div>
-          <div class="tooltip-specialist" id="tooltip-specialist"></div>
-          <p class="tooltip-desc" id="tooltip-desc"></p>
-          <button class="tooltip-btn" id="tooltip-cta">Plan My Trip →</button>
-        </div>
-      </div>
-
-      <!-- Destination pills -->
-      <div class="dest-pills" id="dest-pills">
-        <button class="dest-pill active" data-code="all">All Regions</button>
-        <button class="dest-pill" data-code="EU">Europe</button>
-        <button class="dest-pill" data-code="AS">Asia Pacific</button>
-        <button class="dest-pill" data-code="ME">Middle East</button>
-        <button class="dest-pill" data-code="AF">Africa</button>
-        <button class="dest-pill" data-code="AM">Americas</button>
-        <button class="dest-pill" data-code="OC">Oceania</button>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════ SERVICES ══════════════════════════ -->
-  <section id="services">
-    <div class="max-container">
-      <div class="services-header">
-        <div class="section-label reveal">What We Offer</div>
-        <h2 class="section-title reveal">Crafted For Every<br><em>Journey</em></h2>
-      </div>
-
-      <div class="services-grid">
-
-        <div class="service-card reveal">
-          <div class="service-icon">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1">
-              <path d="M18 3C10 3 4 9 4 17s6 14 14 14 14-6 14-14S26 3 18 3z"/>
-              <path d="M12 17c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6"/>
-              <path d="M18 11v-4M18 31v-4M4 17h4M32 17h-4"/>
-            </svg>
-          </div>
-          <span class="service-number">01</span>
-          <h3 class="service-name">Luxury Holidays</h3>
-          <p class="service-desc">Handpicked five-star resorts, private villas, and immersive cultural escapes across the world's most coveted destinations.</p>
-          <div class="service-arrow">→</div>
         </div>
 
-        <div class="service-card reveal" style="--delay: 0.1s">
-          <div class="service-icon">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1">
-              <rect x="4" y="8" width="28" height="18" rx="2"/>
-              <path d="M4 16h28"/>
-              <circle cx="18" cy="12" r="2"/>
-              <path d="M12 26v4M24 26v4M8 30h20"/>
-            </svg>
-          </div>
-          <span class="service-number">02</span>
-          <h3 class="service-name">Corporate Travel</h3>
-          <p class="service-desc">Seamless business travel management — priority bookings, executive lounges, and full itinerary coordination worldwide.</p>
-          <div class="service-arrow">→</div>
-        </div>
-
-        <div class="service-card reveal" style="--delay: 0.2s">
-          <div class="service-icon">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1">
-              <path d="M18 30S6 22 6 13a7 7 0 0112-4.9A7 7 0 0130 13c0 9-12 17-12 17z"/>
-            </svg>
-          </div>
-          <span class="service-number">03</span>
-          <h3 class="service-name">Honeymoon & Romance</h3>
-          <p class="service-desc">Intimate escapes for two — overwater bungalows, private candlelit surprises, and memories crafted to last forever.</p>
-          <div class="service-arrow">→</div>
-        </div>
-
-        <div class="service-card reveal" style="--delay: 0.3s">
-          <div class="service-icon">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1">
-              <polygon points="18 3 22 14 34 14 24 21 28 32 18 25 8 32 12 21 2 14 14 14"/>
-            </svg>
-          </div>
-          <span class="service-number">04</span>
-          <h3 class="service-name">Tailored Experiences</h3>
-          <p class="service-desc">Fully bespoke itineraries built around your desires — private tours, exclusive access, and once-in-a-lifetime adventures.</p>
-          <div class="service-arrow">→</div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════ HOW IT WORKS ══════════════════════ -->
-  <section id="how-it-works">
-    <div class="max-container">
-      <div class="steps-header">
-        <div class="section-label reveal" style="justify-content:center">Our Process</div>
-        <h2 class="section-title reveal" style="text-align:center">The Art of<br><em>Effortless</em> Travel</h2>
-      </div>
-
-      <div class="steps-wrap">
-        <div class="step reveal" id="step-1">
-          <div class="step-num">01</div>
-          <div class="step-icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
-            </svg>
-          </div>
-          <h3 class="step-name">Tell Us Your Vision</h3>
-          <p class="step-desc">Share your dream — destination, dates, style, and any special wishes. We listen, deeply.</p>
-        </div>
-
-        <div class="step-connector">
-          <svg width="60" height="1" viewBox="0 0 60 1"><line x1="0" y1="0.5" x2="60" y2="0.5" stroke="rgba(201,149,106,0.3)" stroke-width="1" stroke-dasharray="4 4"/></svg>
-          <svg width="8" height="8" viewBox="0 0 8 8"><polygon points="0,0 8,4 0,8" fill="rgba(201,149,106,0.5)"/></svg>
-        </div>
-
-        <div class="step reveal" id="step-2" style="--delay:0.2s">
-          <div class="step-num">02</div>
-          <div class="step-icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
-              <line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/>
-            </svg>
-          </div>
-          <h3 class="step-name">We Curate Your Journey</h3>
-          <p class="step-desc">Our specialists craft a bespoke proposal — every detail, experience, and connection, perfected.</p>
-        </div>
-
-        <div class="step-connector">
-          <svg width="60" height="1" viewBox="0 0 60 1"><line x1="0" y1="0.5" x2="60" y2="0.5" stroke="rgba(201,149,106,0.3)" stroke-width="1" stroke-dasharray="4 4"/></svg>
-          <svg width="8" height="8" viewBox="0 0 8 8"><polygon points="0,0 8,4 0,8" fill="rgba(201,149,106,0.5)"/></svg>
-        </div>
-
-        <div class="step reveal" id="step-3" style="--delay:0.4s">
-          <div class="step-num">03</div>
-          <div class="step-icon-wrap">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .5h3a2 2 0 012 1.72 12.05 12.05 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.36a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.05 12.05 0 002.81.7A2 2 0 0122 16.92z"/>
-            </svg>
-          </div>
-          <h3 class="step-name">Travel Seamlessly</h3>
-          <p class="step-desc">Your dedicated concierge is available around the clock from departure to return, ensuring pure peace of mind.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════ TRUST ════════════════════════════ -->
-  <section id="trust">
-    <div class="trust-grid-bg"></div>
-    <div class="max-container" style="position:relative">
-
-      <div class="stats-row reveal">
-        <div class="stat">
-          <span class="stat-num" data-target="60">0</span>
-          <span class="stat-suffix">+</span>
-          <span class="stat-label">Countries Served</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num" data-target="2400">0</span>
-          <span class="stat-suffix">+</span>
-          <span class="stat-label">Clients Assisted</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num" data-target="15">0</span>
-          <span class="stat-suffix">+</span>
-          <span class="stat-label">Years of Experience</span>
-        </div>
-      </div>
-
-      <div class="testi-section">
-        <div class="section-label reveal" style="justify-content:center">From Our Travellers</div>
-        <h2 class="section-title reveal" style="text-align:center">Words That<br><em>Inspire</em> Us</h2>
-
-        <div class="testi-stage">
-          <button class="testi-nav testi-prev" id="testi-prev" aria-label="Previous">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-
-          <div class="testi-track" id="testi-track">
-            <div class="testi-slider" id="testi-slider">
-
-              <div class="testi-slide">
-                <div class="testi-mark">"</div>
-                <p class="testi-text">Patricia and her team transformed our anniversary trip into something beyond imagination. Every hotel, every transfer, every private dinner — flawless beyond words.</p>
-                <div class="testi-author">Jonathan & Elise Harrington</div>
-                <div class="testi-origin">Singapore · Maldives Private Escape</div>
-              </div>
-
-              <div class="testi-slide">
-                <div class="testi-mark">"</div>
-                <p class="testi-text">I've used many travel agencies over the years. None have come close to the level of personal attention and care that Travel World Concierge delivers on every single trip.</p>
-                <div class="testi-author">Dato' Ahmad Rizal</div>
-                <div class="testi-origin">Kuala Lumpur · European Grand Tour</div>
-              </div>
-
-              <div class="testi-slide">
-                <div class="testi-mark">"</div>
-                <p class="testi-text">Our honeymoon in Santorini was orchestrated to perfection. The private cave suite, the sunset cruise — it felt as though the world had been arranged just for us.</p>
-                <div class="testi-author">Marcus & Priya Chen</div>
-                <div class="testi-origin">Kuching · Greece Honeymoon</div>
-              </div>
-
-            </div>
-          </div>
-
-          <button class="testi-nav testi-next" id="testi-next" aria-label="Next">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-        </div>
-
-        <div class="testi-dots" id="testi-dots">
-          <button class="testi-dot active" data-i="0"></button>
-          <button class="testi-dot" data-i="1"></button>
-          <button class="testi-dot" data-i="2"></button>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════ CONTACT ═══════════════════════════ -->
-  <section id="contact">
-    <div class="max-container">
-      <div class="contact-wrap">
-
-        <div class="contact-left reveal">
-          <div class="section-label">Begin Your Journey</div>
-          <h2 class="section-title">A Single<br><em>Conversation</em><br>Changes Everything</h2>
-          <p class="contact-intro">Tell us where you wish to go, and we will take care of everything else — from first flight to final farewell.</p>
-
-          <div class="contact-details">
-            <div class="contact-detail">
-              <div class="cd-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .5h3a2 2 0 012 1.72 12.05 12.05 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.36a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.05 12.05 0 002.81.7A2 2 0 0122 16.92z"/>
-                </svg>
-              </div>
-              <div>
-                <div class="cd-label">Phone</div>
-                <div class="cd-value">+60 16-888 6868<br>+60 82-253 404</div>
-              </div>
-            </div>
-            <div class="contact-detail">
-              <div class="cd-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
-                </svg>
-              </div>
-              <div>
-                <div class="cd-label">Email</div>
-                <div class="cd-value">travelworld.concierge@gmail.com</div>
-              </div>
-            </div>
-            <div class="contact-detail">
-              <div class="cd-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-              </div>
-              <div>
-                <div class="cd-label">Office</div>
-                <div class="cd-value">13, Jalan Song Thian Cheok<br>93100, Kuching, Sarawak</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="contact-form-card reveal" style="--delay:0.2s">
-          <div class="form-row">
-            <div class="form-field">
-              <label class="form-label">Full Name</label>
-              <input type="text" class="form-input" placeholder="Your name" />
-            </div>
-            <div class="form-field">
-              <label class="form-label">Email Address</label>
-              <input type="email" class="form-input" placeholder="your@email.com" />
-            </div>
-          </div>
-          <div class="form-field">
-            <label class="form-label">Destination</label>
-            <select class="form-select">
-              <option value="" disabled selected>Select a destination</option>
-              <option>Europe</option>
-              <option>Southeast Asia</option>
-              <option>Japan & East Asia</option>
-              <option>Middle East</option>
-              <option>Africa & Safari</option>
-              <option>Maldives & Indian Ocean</option>
-              <option>Americas</option>
-              <option>Australia & Pacific</option>
-              <option>Bespoke / Multiple Destinations</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label class="form-label">Message</label>
-            <textarea class="form-textarea" placeholder="Tell us about your dream journey…"></textarea>
-          </div>
-          <button class="form-submit">Speak to a Concierge</button>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════ FOOTER ════════════════════════════ -->
-  <footer>
-    <div class="max-container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <a href="#" class="nav-logo footer-logo">
-            <div class="nav-logo-mark">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1">
-                <circle cx="11" cy="11" r="9"/><ellipse cx="11" cy="11" rx="5" ry="9"/>
-                <line x1="2" y1="11" x2="20" y2="11"/>
-                <line x1="4" y1="6" x2="18" y2="6"/>
-                <line x1="4" y1="16" x2="18" y2="16"/>
+        <div class="services-grid">
+          <div class="service-card reveal">
+            <div class="service-icon">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 36 36"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+              >
+                <path
+                  d="M18 3C10 3 4 9 4 17s6 14 14 14 14-6 14-14S26 3 18 3z"
+                />
+                <path d="M12 17c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6" />
+                <path d="M18 11v-4M18 31v-4M4 17h4M32 17h-4" />
               </svg>
             </div>
-            <div class="nav-logo-text">
-              <span class="nav-brand">Travelworld</span>
-              <span class="nav-sub">Concierge</span>
+            <span class="service-number">01</span>
+            <h3 class="service-name">Luxury Holidays</h3>
+            <p class="service-desc">
+              Handpicked five-star resorts, private villas, and immersive
+              cultural escapes across the world's most coveted destinations.
+            </p>
+            <div class="service-arrow">→</div>
+          </div>
+
+          <div class="service-card reveal" style="--delay: 0.1s">
+            <div class="service-icon">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 36 36"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+              >
+                <rect x="4" y="8" width="28" height="18" rx="2" />
+                <path d="M4 16h28" />
+                <circle cx="18" cy="12" r="2" />
+                <path d="M12 26v4M24 26v4M8 30h20" />
+              </svg>
             </div>
-          </a>
-          <p class="footer-tagline">Your ultimate travel advisor — crafting extraordinary journeys for discerning travellers since 2009.</p>
-        </div>
+            <span class="service-number">02</span>
+            <h3 class="service-name">Corporate Travel</h3>
+            <p class="service-desc">
+              Seamless business travel management — priority bookings, executive
+              lounges, and full itinerary coordination worldwide.
+            </p>
+            <div class="service-arrow">→</div>
+          </div>
 
-        <div class="footer-col">
-          <div class="footer-col-title">Navigate</div>
-          <ul class="footer-links">
-            <li><a href="#destinations">Destinations</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#how-it-works">Our Process</a></li>
-            <li><a href="#trust">About</a></li>
-          </ul>
-        </div>
+          <div class="service-card reveal" style="--delay: 0.2s">
+            <div class="service-icon">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 36 36"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+              >
+                <path
+                  d="M18 30S6 22 6 13a7 7 0 0112-4.9A7 7 0 0130 13c0 9-12 17-12 17z"
+                />
+              </svg>
+            </div>
+            <span class="service-number">03</span>
+            <h3 class="service-name">Honeymoon & Romance</h3>
+            <p class="service-desc">
+              Intimate escapes for two — overwater bungalows, private candlelit
+              surprises, and memories crafted to last forever.
+            </p>
+            <div class="service-arrow">→</div>
+          </div>
 
-        <div class="footer-col">
-          <div class="footer-col-title">Services</div>
-          <ul class="footer-links">
-            <li><a href="#">Luxury Holidays</a></li>
-            <li><a href="#">Corporate Travel</a></li>
-            <li><a href="#">Honeymoon Packages</a></li>
-            <li><a href="#">Private Experiences</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <div class="footer-col-title">Contact</div>
-          <ul class="footer-links">
-            <li><a href="tel:+60168886868">+60 16-888 6868</a></li>
-            <li><a href="tel:+60822534040">+60 82-253 404</a></li>
-            <li><a href="mailto:travelworld.concierge@gmail.com">Email Us</a></li>
-            <li><a href="#">WhatsApp</a></li>
-          </ul>
+          <div class="service-card reveal" style="--delay: 0.3s">
+            <div class="service-icon">
+              <svg
+                width="36"
+                height="36"
+                viewBox="0 0 36 36"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+              >
+                <polygon
+                  points="18 3 22 14 34 14 24 21 28 32 18 25 8 32 12 21 2 14 14 14"
+                />
+              </svg>
+            </div>
+            <span class="service-number">04</span>
+            <h3 class="service-name">Tailored Experiences</h3>
+            <p class="service-desc">
+              Fully bespoke itineraries built around your desires — private
+              tours, exclusive access, and once-in-a-lifetime adventures.
+            </p>
+            <div class="service-arrow">→</div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="footer-bottom">
-        <span class="footer-copy">© 2025 Travel World Concierge Sdn. Bhd. · Kuching, Sarawak, Malaysia</span>
-        <div class="footer-socials">
-          <a href="#" class="footer-social" aria-label="Instagram">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="2" y="2" width="20" height="20" rx="5"/>
-              <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+    <!-- ═══════════════════════════════ HOW IT WORKS ══════════════════════ -->
+    <section id="how-it-works">
+      <div class="max-container">
+        <div class="steps-header">
+          <div class="section-label reveal" style="justify-content: center">
+            Our Process
+          </div>
+          <h2 class="section-title reveal" style="text-align: center">
+            The Art of<br /><em>Effortless</em> Travel
+          </h2>
+        </div>
+
+        <div class="steps-wrap">
+          <div class="step reveal" id="step-1">
+            <div class="step-num">01</div>
+            <div class="step-icon-wrap">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.2"
+              >
+                <path
+                  d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+                />
+              </svg>
+            </div>
+            <h3 class="step-name">Tell Us Your Vision</h3>
+            <p class="step-desc">
+              Share your dream — destination, dates, style, and any special
+              wishes. We listen, deeply.
+            </p>
+          </div>
+
+          <div class="step-connector">
+            <svg width="60" height="1" viewBox="0 0 60 1">
+              <line
+                x1="0"
+                y1="0.5"
+                x2="60"
+                y2="0.5"
+                stroke="rgba(201,149,106,0.3)"
+                stroke-width="1"
+                stroke-dasharray="4 4"
+              />
             </svg>
-          </a>
-          <a href="#" class="footer-social" aria-label="Facebook">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+            <svg width="8" height="8" viewBox="0 0 8 8">
+              <polygon points="0,0 8,4 0,8" fill="rgba(201,149,106,0.5)" />
             </svg>
-          </a>
-          <a href="#" class="footer-social" aria-label="LinkedIn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/>
-              <rect x="2" y="9" width="4" height="12"/>
-              <circle cx="4" cy="4" r="2"/>
+          </div>
+
+          <div class="step reveal" id="step-2" style="--delay: 0.2s">
+            <div class="step-num">02</div>
+            <div class="step-icon-wrap">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.2"
+              >
+                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
+                <line x1="8" y1="2" x2="8" y2="18" />
+                <line x1="16" y1="6" x2="16" y2="22" />
+              </svg>
+            </div>
+            <h3 class="step-name">We Curate Your Journey</h3>
+            <p class="step-desc">
+              Our specialists craft a bespoke proposal — every detail,
+              experience, and connection, perfected.
+            </p>
+          </div>
+
+          <div class="step-connector">
+            <svg width="60" height="1" viewBox="0 0 60 1">
+              <line
+                x1="0"
+                y1="0.5"
+                x2="60"
+                y2="0.5"
+                stroke="rgba(201,149,106,0.3)"
+                stroke-width="1"
+                stroke-dasharray="4 4"
+              />
             </svg>
-          </a>
+            <svg width="8" height="8" viewBox="0 0 8 8">
+              <polygon points="0,0 8,4 0,8" fill="rgba(201,149,106,0.5)" />
+            </svg>
+          </div>
+
+          <div class="step reveal" id="step-3" style="--delay: 0.4s">
+            <div class="step-num">03</div>
+            <div class="step-icon-wrap">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.2"
+              >
+                <path
+                  d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .5h3a2 2 0 012 1.72 12.05 12.05 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.36a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.05 12.05 0 002.81.7A2 2 0 0122 16.92z"
+                />
+              </svg>
+            </div>
+            <h3 class="step-name">Travel Seamlessly</h3>
+            <p class="step-desc">
+              Your dedicated concierge is available around the clock from
+              departure to return, ensuring pure peace of mind.
+            </p>
+          </div>
         </div>
       </div>
+    </section>
+
+    <!-- ═══════════════════════════════ TRUST ════════════════════════════ -->
+    <section id="trust">
+      <div class="trust-grid-bg"></div>
+      <div class="max-container" style="position: relative">
+        <div class="stats-row reveal">
+          <div class="stat">
+            <span class="stat-num" data-target="60">0</span>
+            <span class="stat-suffix">+</span>
+            <span class="stat-label">Countries Served</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num" data-target="2400">0</span>
+            <span class="stat-suffix">+</span>
+            <span class="stat-label">Clients Assisted</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num" data-target="15">0</span>
+            <span class="stat-suffix">+</span>
+            <span class="stat-label">Years of Experience</span>
+          </div>
+        </div>
+
+        <div class="testi-section">
+          <div class="section-label reveal" style="justify-content: center">
+            From Our Travellers
+          </div>
+          <h2 class="section-title reveal" style="text-align: center">
+            Words That<br /><em>Inspire</em> Us
+          </h2>
+
+          <div class="testi-stage">
+            <button
+              class="testi-nav testi-prev"
+              id="testi-prev"
+              aria-label="Previous"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+
+            <div class="testi-track" id="testi-track">
+              <div class="testi-slider" id="testi-slider">
+                <div class="testi-slide">
+                  <div class="testi-mark">"</div>
+                  <p class="testi-text">
+                    Patricia and her team transformed our anniversary trip into
+                    something beyond imagination. Every hotel, every transfer,
+                    every private dinner — flawless beyond words.
+                  </p>
+                  <div class="testi-author">Jonathan & Elise Harrington</div>
+                  <div class="testi-origin">
+                    Singapore · Maldives Private Escape
+                  </div>
+                </div>
+
+                <div class="testi-slide">
+                  <div class="testi-mark">"</div>
+                  <p class="testi-text">
+                    I've used many travel agencies over the years. None have
+                    come close to the level of personal attention and care that
+                    Travel World Concierge delivers on every single trip.
+                  </p>
+                  <div class="testi-author">Dato' Ahmad Rizal</div>
+                  <div class="testi-origin">
+                    Kuala Lumpur · European Grand Tour
+                  </div>
+                </div>
+
+                <div class="testi-slide">
+                  <div class="testi-mark">"</div>
+                  <p class="testi-text">
+                    Our honeymoon in Santorini was orchestrated to perfection.
+                    The private cave suite, the sunset cruise — it felt as
+                    though the world had been arranged just for us.
+                  </p>
+                  <div class="testi-author">Marcus & Priya Chen</div>
+                  <div class="testi-origin">Kuching · Greece Honeymoon</div>
+                </div>
+              </div>
+            </div>
+
+            <button
+              class="testi-nav testi-next"
+              id="testi-next"
+              aria-label="Next"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="testi-dots" id="testi-dots">
+            <button class="testi-dot active" data-i="0"></button>
+            <button class="testi-dot" data-i="1"></button>
+            <button class="testi-dot" data-i="2"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ CONTACT ═══════════════════════════ -->
+    <section id="contact">
+      <div class="max-container">
+        <div class="contact-wrap">
+          <div class="contact-left reveal">
+            <div class="section-label">Begin Your Journey</div>
+            <h2 class="section-title">
+              A Single<br /><em>Conversation</em><br />Changes Everything
+            </h2>
+            <p class="contact-intro">
+              Tell us where you wish to go, and we will take care of everything
+              else — from first flight to final farewell.
+            </p>
+
+            <div class="contact-details">
+              <div class="contact-detail">
+                <div class="cd-icon">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .5h3a2 2 0 012 1.72 12.05 12.05 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.36a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.05 12.05 0 002.81.7A2 2 0 0122 16.92z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <div class="cd-label">Phone</div>
+                  <div class="cd-value">
+                    +60 16-888 6868<br />+60 82-253 404
+                  </div>
+                </div>
+              </div>
+              <div class="contact-detail">
+                <div class="cd-icon">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <path
+                      d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                    />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="cd-label">Email</div>
+                  <div class="cd-value">pat@twctravels.com</div>
+                </div>
+              </div>
+              <div class="contact-detail">
+                <div class="cd-icon">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="cd-label">Office</div>
+                  <div class="cd-value">
+                    13, Jalan Song Thian Cheok<br />93100, Kuching, Sarawak
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form-card reveal" style="--delay: 0.2s">
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-input" placeholder="Your name" />
+              </div>
+              <div class="form-field">
+                <label class="form-label">Email Address</label>
+                <input
+                  type="email"
+                  class="form-input"
+                  placeholder="your@email.com"
+                />
+              </div>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Destination</label>
+              <select class="form-select">
+                <option value="" disabled selected>Select a destination</option>
+                <option>Europe</option>
+                <option>Southeast Asia</option>
+                <option>Japan & East Asia</option>
+                <option>Middle East</option>
+                <option>Africa & Safari</option>
+                <option>Maldives & Indian Ocean</option>
+                <option>Americas</option>
+                <option>Australia & Pacific</option>
+                <option>Bespoke / Multiple Destinations</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Message</label>
+              <textarea
+                class="form-textarea"
+                placeholder="Tell us about your dream journey…"
+              ></textarea>
+            </div>
+            <button class="form-submit">Speak to a Concierge</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════ FOOTER ════════════════════════════ -->
+    <footer>
+      <div class="max-container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <a href="#" class="nav-logo footer-logo">
+              <div class="nav-logo-mark">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 22 22"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1"
+                >
+                  <circle cx="11" cy="11" r="9" />
+                  <ellipse cx="11" cy="11" rx="5" ry="9" />
+                  <line x1="2" y1="11" x2="20" y2="11" />
+                  <line x1="4" y1="6" x2="18" y2="6" />
+                  <line x1="4" y1="16" x2="18" y2="16" />
+                </svg>
+              </div>
+              <div class="nav-logo-text">
+                <span class="nav-brand">Travelworld</span>
+                <span class="nav-sub">Concierge</span>
+              </div>
+            </a>
+            <p class="footer-tagline">
+              Your ultimate travel advisor — crafting extraordinary journeys for
+              discerning travellers since 2009.
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <div class="footer-col-title">Navigate</div>
+            <ul class="footer-links">
+              <li><a href="#destinations">Destinations</a></li>
+              <li><a href="#services">Services</a></li>
+              <li><a href="#how-it-works">Our Process</a></li>
+              <li><a href="#trust">About</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <div class="footer-col-title">Services</div>
+            <ul class="footer-links">
+              <li><a href="#">Luxury Holidays</a></li>
+              <li><a href="#">Corporate Travel</a></li>
+              <li><a href="#">Honeymoon Packages</a></li>
+              <li><a href="#">Private Experiences</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <div class="footer-col-title">Contact</div>
+            <ul class="footer-links">
+              <li><a href="tel:+60168886868">+60 16-888 6868</a></li>
+              <li><a href="tel:+60822534040">+60 82-253 404</a></li>
+              <li><a href="mailto:pat@twctravels.com">Email Us</a></li>
+              <li><a href="#">WhatsApp</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span class="footer-copy"
+            >© 2025 Travel World Concierge Sdn. Bhd. · Kuching, Sarawak,
+            Malaysia</span
+          >
+          <div class="footer-socials">
+            <a href="#" class="footer-social" aria-label="Instagram">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a href="#" class="footer-social" aria-label="Facebook">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"
+                />
+              </svg>
+            </a>
+            <a href="#" class="footer-social" aria-label="LinkedIn">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path
+                  d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"
+                />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Floating action buttons -->
+    <div class="float-actions">
+      <a
+        href="https://wa.me/60168886868"
+        class="float-btn float-wa"
+        title="WhatsApp Us"
+        target="_blank"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+          />
+        </svg>
+      </a>
+      <a href="tel:+60168886868" class="float-btn float-call" title="Call Us">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <path
+            d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .5h3a2 2 0 012 1.72 12.05 12.05 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.36a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.05 12.05 0 002.81.7A2 2 0 0122 16.92z"
+          />
+        </svg>
+      </a>
     </div>
-  </footer>
 
-  <!-- Floating action buttons -->
-  <div class="float-actions">
-    <a href="https://wa.me/60168886868" class="float-btn float-wa" title="WhatsApp Us" target="_blank">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-      </svg>
-    </a>
-    <a href="tel:+60168886868" class="float-btn float-call" title="Call Us">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .5h3a2 2 0 012 1.72 12.05 12.05 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 8.36a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.05 12.05 0 002.81.7A2 2 0 0122 16.92z"/>
-      </svg>
-    </a>
-  </div>
-
-  <!-- D3.js for the globe/map -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
-  <script src="main.js"></script>
-</body>
+    <!-- D3.js for the globe/map -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+    <script src="main.js"></script>
+  </body>
 </html>
