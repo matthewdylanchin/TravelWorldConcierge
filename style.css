@@ -457,12 +457,16 @@ section {
   flex-direction: column;
   align-items: flex-end;
   gap: 14px;
+  position: relative;
+  z-index: 10; /* keep controls and dropdown above the globe/map */
 }
 
 /* Search */
 .dest-search-wrap {
   position: relative;
   width: 300px;
+  /* Ensure the autocomplete dropdown sits above the globe/map SVG */
+  z-index: 5;
 }
 .search-icon {
   position: absolute;
@@ -502,7 +506,8 @@ section {
   background: rgba(18, 11, 7, 0.98);
   border: 1px solid var(--border-h);
   backdrop-filter: blur(24px);
-  z-index: 60;
+  /* Sit above globe/map SVG and tooltip */
+  z-index: 200;
   display: none;
   max-height: 220px;
   overflow-y: auto;
@@ -571,6 +576,7 @@ section {
   background: rgba(10, 6, 4, 0.6);
   overflow: hidden;
   margin-bottom: 28px;
+  z-index: 0;
 }
 
 #globe-container {

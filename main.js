@@ -277,6 +277,7 @@ let svg, g, pathGen;
 let projGlobe, projMap;
 let worldData;
 let globeRotation = [0, -20, 0];
+let allCountryNames = [];
 
 /* ══════════════════════ HERO CANVAS GLOBE ══════════════════════ */
 (function initHeroGlobe() {
@@ -491,6 +492,20 @@ function buildD3Scene() {
   /* ── Countries ── */
   g = svg.append("g").attr("class", "countries");
   const countries = topojson.feature(worldData, worldData.objects.countries);
+
+  // Build a master list of country names for search/autocomplete:
+  // use curated names (NUMERIC_TO_NAME) when available, otherwise fall back
+  // to the dataset's country name.
+  const nameSet = new Set();
+  countries.features.forEach((f) => {
+    const idStr = String(f.id);
+    const curated = NUMERIC_TO_NAME[idStr];
+    const label = curated || f.properties?.name;
+    if (label) nameSet.add(label);
+  });
+  allCountryNames = Array.from(nameSet).sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: "base" }),
+  );
 
   g.selectAll(".country-path")
     .data(countries.features)
@@ -920,26 +935,22 @@ destPills.forEach((pill) => {
 });
 
 /* ══════════════════════ SEARCH / AUTOCOMPLETE ══════════════════════ */
-const allDestNames = Object.keys(DESTINATIONS);
-
 searchInput.addEventListener("input", () => {
   const val = searchInput.value.toLowerCase().trim();
   if (!val) {
     acDrop.classList.remove("open");
     return;
   }
-  const matches = allDestNames.filter((n) => n.toLowerCase().includes(val));
+  const matches = allCountryNames.filter((n) =>
+    n.toLowerCase().includes(val),
+  );
   if (!matches.length) {
     acDrop.classList.remove("open");
     return;
   }
   acDrop.innerHTML = matches
     .map(
-      (n) =>
-        `<div class="ac-item" data-name="${n}">
-         <span class="ac-item-flag">${DESTINATIONS[n].flag}</span>
-         ${n}
-       </div>`,
+      (n) => `<div class="ac-item" data-name="${n}">${n}</div>`,
     )
     .join("");
   acDrop.classList.add("open");
@@ -953,22 +964,51 @@ acDrop.addEventListener("click", (e) => {
   acDrop.classList.remove("open");
 
   /* Fly to country on globe, or highlight on map */
-  const d = DESTINATIONS[name];
-  if (d && worldData) {
-    const num = ISO_NUMERIC[d.code];
-    const feature = topojson
-      .feature(worldData, worldData.objects.countries)
-      .features.find((f) => String(f.id) === num);
+  if (!worldData) return;
 
-    if (feature) {
-      const centroid = d3.geoCentroid(feature);
-      if (currentView === "globe") {
-        rotateTo([-centroid[0], -centroid[1], 0], () => showTooltip(name));
-      } else {
+  const featureCollection = topojson.feature(
+    worldData,
+    worldData.objects.countries,
+  );
+
+  // First, try to resolve via curated destination (by numeric ISO),
+  // since we may have richer copy for certain countries.
+  const curated = DESTINATIONS[name];
+  let feature = null;
+
+  if (curated) {
+    const num =
+      ISO_NUMERIC[curated.code] &&
+      String(parseInt(ISO_NUMERIC[curated.code], 10));
+    feature = featureCollection.features.find((f) => String(f.id) === num);
+  }
+
+  // If not curated or not found via numeric id, fall back to matching by label.
+  if (!feature) {
+    feature = featureCollection.features.find(
+      (f) => f.properties?.name === name,
+    );
+  }
+
+  if (!feature) return;
+
+  const centroid = d3.geoCentroid(feature);
+
+  // Curated: use rich tooltip; otherwise a generic enquiry card.
+  const showDetails = curated
+    ? () => {
         showTooltip(name);
+        setHighlight(name);
       }
-      setHighlight(name);
-    }
+    : () => {
+        showGenericTooltip(feature);
+        setHighlightByNumericId(String(feature.id));
+      };
+
+  if (currentView === "globe") {
+    rotateTo([-centroid[0], -centroid[1], 0], showDetails);
+  } else {
+    showDetails();
   }
 });
 
