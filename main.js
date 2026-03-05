@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════════
    TRAVEL WORLD CONCIERGE — main.js
-   Globe ↔ Map transform with D3 + TopoJSON
+   Globe with D3 + TopoJSON
    ════════════════════════════════════════════════════════════════ */
 
 "use strict";
@@ -91,13 +91,6 @@ const DESTINATIONS = {
     specialist: "Patricia Kho · Africa Lead",
     desc: "Riad palaces in Marrakech, private Sahara camps, and the blue streets of Chefchaouen.",
   },
-  Maldives: {
-    code: "MV",
-    region: "AS",
-    flag: "🇲🇻",
-    specialist: "Patricia Kho · Indian Ocean Lead",
-    desc: "Overwater bungalows, bioluminescent lagoons, and resorts known only to the privileged few.",
-  },
   Bali: {
     code: "ID",
     region: "AS",
@@ -135,14 +128,10 @@ const ISO_NUMERIC = {
 /* Reverse map: numericId → destination name */
 const NUMERIC_TO_NAME = {};
 Object.entries(DESTINATIONS).forEach(([name, d]) => {
-  // Normalize numeric codes so they match TopoJSON ids (no leading zeros).
   const num = ISO_NUMERIC[d.code] && String(parseInt(ISO_NUMERIC[d.code], 10));
   if (num) NUMERIC_TO_NAME[num] = name;
 });
 
-/* Compact numeric ISO → common country name for the generic tooltip.
-      Only a representative subset is needed — uncurated countries show a
-      friendly generic card inviting the visitor to enquire. */
 const NUMERIC_TO_COUNTRY_NAME = {
   "004": "Afghanistan",
   "008": "Albania",
@@ -261,20 +250,17 @@ const tooltipDesc = document.getElementById("tooltip-desc");
 const tooltipFlag = document.getElementById("tooltip-flag");
 const searchInput = document.getElementById("dest-search");
 const acDrop = document.getElementById("ac-drop");
-const btnGlobe = document.getElementById("btn-globe");
-const btnMap = document.getElementById("btn-map");
 const destPills = document.querySelectorAll(".dest-pill");
 
 /* ══════════════════════ STATE ══════════════════════ */
-let currentView = "globe"; // 'globe' | 'map'
-let isTransitioning = false;
+const currentView = "globe";
 let activeRegion = "all";
 let rotationTimer = null;
 let currentHighlight = null;
 
 /* D3 / projection refs */
 let svg, g, pathGen;
-let projGlobe, projMap;
+let projGlobe;
 let worldData;
 let globeRotation = [0, -20, 0];
 let allCountryNames = [];
@@ -345,12 +331,12 @@ let allCountryNames = [];
 
     /* Dot clusters (continent silhouettes) */
     const clusters = [
-      { dx: 0.28, dy: -0.18, n: 8 }, // North America
-      { dx: 0.1, dy: 0.3, n: 5 }, // South America
-      { dx: 0.46, dy: -0.05, n: 6 }, // Europe
-      { dx: 0.52, dy: 0.18, n: 7 }, // Africa
-      { dx: 0.7, dy: -0.1, n: 9 }, // Asia
-      { dx: 0.82, dy: 0.28, n: 5 }, // Australia
+      { dx: 0.28, dy: -0.18, n: 8 },
+      { dx: 0.1, dy: 0.3, n: 5 },
+      { dx: 0.46, dy: -0.05, n: 6 },
+      { dx: 0.52, dy: 0.18, n: 7 },
+      { dx: 0.7, dy: -0.1, n: 9 },
+      { dx: 0.82, dy: 0.28, n: 5 },
     ];
     clusters.forEach((cl) => {
       for (let j = 0; j < cl.n; j++) {
@@ -392,7 +378,7 @@ let allCountryNames = [];
   draw();
 })();
 
-/* ══════════════════════ LOAD WORLD DATA + BUILD GLOBE/MAP ══════════════════════ */
+/* ══════════════════════ LOAD WORLD DATA + BUILD GLOBE ══════════════════════ */
 async function loadAndBuildMap() {
   try {
     const res = await fetch(
@@ -413,18 +399,13 @@ function buildD3Scene() {
   const W = stage.clientWidth;
   const H = stage.clientHeight;
 
-  /* ── Projections ── */
+  /* ── Projection ── */
   projGlobe = d3
     .geoOrthographic()
     .scale(Math.min(W, H) * 0.38)
     .translate([W / 2, H / 2])
     .clipAngle(90)
     .rotate(globeRotation);
-
-  projMap = d3
-    .geoNaturalEarth1()
-    .scale(W / 6.2)
-    .translate([W / 2, H / 2]);
 
   pathGen = d3.geoPath().projection(projGlobe);
 
@@ -493,9 +474,6 @@ function buildD3Scene() {
   g = svg.append("g").attr("class", "countries");
   const countries = topojson.feature(worldData, worldData.objects.countries);
 
-  // Build a master list of country names for search/autocomplete:
-  // use curated names (NUMERIC_TO_NAME) when available, otherwise fall back
-  // to the dataset's country name.
   const nameSet = new Set();
   countries.features.forEach((f) => {
     const idStr = String(f.id);
@@ -522,7 +500,6 @@ function buildD3Scene() {
       d3.select(this).classed("hovered", false);
     })
     .on("click", function (event, d) {
-      // If the pointer moved more than the drag threshold, this is a drag-end — ignore
       if (didDrag) {
         didDrag = false;
         return;
@@ -532,24 +509,14 @@ function buildD3Scene() {
       const name = NUMERIC_TO_NAME[String(d.id)];
 
       if (!name) {
-        // Country not in curated list — still highlight it + show a generic enquiry card
         const centroid = d3.geoCentroid(d);
         setHighlightByNumericId(String(d.id));
-        if (currentView === "globe") {
-          rotateTo([-centroid[0], -centroid[1], 0], () => showGenericTooltip(d));
-        } else {
-          showGenericTooltip(d);
-        }
+        rotateTo([-centroid[0], -centroid[1], 0], () => showGenericTooltip(d));
         return;
       }
 
-      if (currentView === "globe") {
-        const centroid = d3.geoCentroid(d);
-        rotateTo([-centroid[0], -centroid[1], 0], () => showTooltip(name));
-      } else {
-        // Map view: show tooltip immediately, no rotation needed
-        showTooltip(name);
-      }
+      const centroid = d3.geoCentroid(d);
+      rotateTo([-centroid[0], -centroid[1], 0], () => showTooltip(name));
       setHighlight(name);
     });
 
@@ -565,23 +532,21 @@ function buildD3Scene() {
     .attr("stroke-width", "0.3")
     .attr("d", pathGen);
 
-  /* ── Drag to rotate (globe mode only) ── */
-  // Track whether the pointer actually moved so we can distinguish a drag from a click.
+  /* ── Drag to rotate ── */
   let dragStart = null;
   let didDrag = false;
-  const DRAG_THRESHOLD = 4; // px — movement below this is treated as a click
+  const DRAG_THRESHOLD = 4;
 
   svg.call(
     d3
       .drag()
       .on("start", function (event) {
-        if (currentView !== "globe") return;
         stopAutoRotate();
         dragStart = { x: event.x, y: event.y, rot: [...globeRotation] };
         didDrag = false;
       })
       .on("drag", function (event) {
-        if (!dragStart || currentView !== "globe") return;
+        if (!dragStart) return;
         const dx = event.x - dragStart.x;
         const dy = event.y - dragStart.y;
         if (Math.hypot(dx, dy) > DRAG_THRESHOLD) didDrag = true;
@@ -595,7 +560,7 @@ function buildD3Scene() {
       })
       .on("end", function () {
         dragStart = null;
-        if (currentView === "globe") startAutoRotate();
+        startAutoRotate();
       }),
   );
 
@@ -605,7 +570,6 @@ function buildD3Scene() {
       H2 = stage.clientHeight;
     svg.attr("width", W2).attr("height", H2);
     projGlobe.translate([W2 / 2, H2 / 2]).scale(Math.min(W2, H2) * 0.38);
-    projMap.translate([W2 / 2, H2 / 2]).scale(W2 / 6.2);
     svg
       .select(".globe-atmosphere")
       .attr("cx", W2 / 2)
@@ -619,7 +583,6 @@ function buildD3Scene() {
 
 /* ── Auto-rotate globe ── */
 function startAutoRotate() {
-  if (currentView !== "globe") return;
   stopAutoRotate();
   rotationTimer = setInterval(() => {
     globeRotation[0] += 0.18;
@@ -664,176 +627,16 @@ function rotateTo(target, callback) {
       requestAnimationFrame(step);
     } else {
       if (callback) callback();
-      // Resume rotation shortly after landing (no "freeze" on the country).
       setTimeout(startAutoRotate, 350);
     }
   }
   requestAnimationFrame(step);
 }
 
-/* ══════════════════════ GLOBE ↔ MAP TRANSITION ══════════════════════ */
-function transitionTo(view) {
-  if (isTransitioning || view === currentView || !svg) return;
-  isTransitioning = true;
-  currentView = view;
-  stopAutoRotate();
-
-  btnGlobe.classList.toggle("active", view === "globe");
-  btnMap.classList.toggle("active", view === "map");
-
-  const stage = document.getElementById("globe-map-stage");
-  const W = stage.clientWidth,
-    H = stage.clientHeight;
-
-  // Build fresh path generators for each projection — do NOT assign to pathGen yet.
-  // pathGen is only swapped once the morph is fully done, so redrawPaths() during
-  // the interval-based globe rotation never uses the wrong projection mid-flight.
-  const targetProjMap = d3
-    .geoNaturalEarth1()
-    .scale(W / 6.2)
-    .translate([W / 2, H / 2]);
-  const targetProjGlobe = d3
-    .geoOrthographic()
-    .scale(Math.min(W, H) * 0.38)
-    .translate([W / 2, H / 2])
-    .clipAngle(90)
-    .rotate(globeRotation);
-
-  const pathToMap = d3.geoPath().projection(targetProjMap);
-  const pathToGlobe = d3.geoPath().projection(targetProjGlobe);
-
-  const DURATION = 950;
-  let finishedCount = 0;
-
-  if (view === "map") {
-    /* ── Globe → Map ─────────────────────────────────────────────── */
-
-    // 1. Fade out the globe chrome first, slightly before paths start moving
-    svg
-      .select(".globe-atmosphere")
-      .transition()
-      .duration(300)
-      .attr("opacity", 0);
-    svg.select(".sphere").transition().duration(300).attr("opacity", 0);
-    svg
-      .select(".graticule")
-      .transition()
-      .duration(300)
-      .attr("stroke-opacity", 0);
-
-    // 2. Morph country fills
-    const countryNodes = svg.selectAll(".country-path");
-    const total = countryNodes.size();
-
-    countryNodes
-      .transition()
-      .duration(DURATION)
-      .ease(d3.easeCubicInOut)
-      .attr("d", pathToMap)
-      .on("end", function () {
-        finishedCount++;
-        if (finishedCount === total) {
-          // All paths done — NOW swap pathGen and update the border in one frame
-          pathGen = pathToMap;
-          projMap = targetProjMap;
-          svg
-            .select(".country-border")
-            .attr(
-              "d",
-              pathToMap(
-                topojson.mesh(
-                  worldData,
-                  worldData.objects.countries,
-                  (a, b) => a !== b,
-                ),
-              ),
-            );
-          isTransitioning = false;
-        }
-      });
-
-    // Border stays hidden (opacity 0) while morphing — fade it in after paths finish
-    svg
-      .select(".country-border")
-      .attr("opacity", 0)
-      .transition()
-      .delay(DURATION + 80)
-      .duration(300)
-      .attr("opacity", 1);
-  } else {
-    /* ── Map → Globe ─────────────────────────────────────────────── */
-
-    // 1. Hide border immediately so it doesn't snap during morph
-    svg.select(".country-border").attr("opacity", 0);
-
-    // 2. Morph country fills back to globe
-    const countryNodes = svg.selectAll(".country-path");
-    const total = countryNodes.size();
-
-    countryNodes
-      .transition()
-      .duration(DURATION)
-      .ease(d3.easeCubicInOut)
-      .attr("d", pathToGlobe)
-      .on("end", function () {
-        finishedCount++;
-        if (finishedCount === total) {
-          pathGen = pathToGlobe;
-          projGlobe = targetProjGlobe;
-          globeRotation = [...targetProjGlobe.rotate()];
-
-          // Update border geometry and fade it back in
-          svg
-            .select(".country-border")
-            .attr(
-              "d",
-              pathToGlobe(
-                topojson.mesh(
-                  worldData,
-                  worldData.objects.countries,
-                  (a, b) => a !== b,
-                ),
-              ),
-            )
-            .transition()
-            .duration(300)
-            .attr("opacity", 1);
-
-          // Fade globe chrome back in
-          svg
-            .select(".globe-atmosphere")
-            .transition()
-            .duration(500)
-            .attr("opacity", 1);
-          svg.select(".sphere").transition().duration(500).attr("opacity", 1);
-          svg
-            .select(".graticule")
-            .transition()
-            .duration(500)
-            .attr("stroke-opacity", 1);
-
-          // Ensure sphere path is correct for new projection
-          svg
-            .select(".sphere")
-            .datum({ type: "Sphere" })
-            .attr("d", pathToGlobe);
-
-          isTransitioning = false;
-          startAutoRotate();
-        }
-      });
-  }
-}
-
-/* View toggle buttons */
-btnGlobe.addEventListener("click", () => transitionTo("globe"));
-btnMap.addEventListener("click", () => transitionTo("map"));
-
 /* ══════════════════════ TOOLTIP ══════════════════════ */
 function showTooltip(name) {
   const d = DESTINATIONS[name];
   if (!d) return;
-  // No emoji/flag shown in the tooltip header.
   tooltipFlag.textContent = "";
   tooltipCountry.textContent = name;
   tooltipSpecialist.textContent = d.specialist;
@@ -843,14 +646,12 @@ function showTooltip(name) {
   tooltip.classList.add("visible");
 }
 
-// For countries not in our curated list — show a friendly get-in-touch card
 function showGenericTooltip(feature) {
   const id = String(feature.id);
-  // Prefer our curated label; otherwise fall back to the name provided
-  // by the TopoJSON data, so every country on the map uses its real name.
   const countryName =
-    NUMERIC_TO_COUNTRY_NAME[id] || feature.properties?.name || "This Destination";
-  // No emoji/flag shown in the tooltip header.
+    NUMERIC_TO_COUNTRY_NAME[id] ||
+    feature.properties?.name ||
+    "This Destination";
   tooltipFlag.textContent = "";
   tooltipCountry.textContent = countryName;
   tooltipSpecialist.textContent = "Patricia Kho · Travel Specialist";
@@ -941,17 +742,13 @@ searchInput.addEventListener("input", () => {
     acDrop.classList.remove("open");
     return;
   }
-  const matches = allCountryNames.filter((n) =>
-    n.toLowerCase().includes(val),
-  );
+  const matches = allCountryNames.filter((n) => n.toLowerCase().includes(val));
   if (!matches.length) {
     acDrop.classList.remove("open");
     return;
   }
   acDrop.innerHTML = matches
-    .map(
-      (n) => `<div class="ac-item" data-name="${n}">${n}</div>`,
-    )
+    .map((n) => `<div class="ac-item" data-name="${n}">${n}</div>`)
     .join("");
   acDrop.classList.add("open");
 });
@@ -963,7 +760,6 @@ acDrop.addEventListener("click", (e) => {
   searchInput.value = name;
   acDrop.classList.remove("open");
 
-  /* Fly to country on globe, or highlight on map */
   if (!worldData) return;
 
   const featureCollection = topojson.feature(
@@ -971,8 +767,6 @@ acDrop.addEventListener("click", (e) => {
     worldData.objects.countries,
   );
 
-  // First, try to resolve via curated destination (by numeric ISO),
-  // since we may have richer copy for certain countries.
   const curated = DESTINATIONS[name];
   let feature = null;
 
@@ -983,7 +777,6 @@ acDrop.addEventListener("click", (e) => {
     feature = featureCollection.features.find((f) => String(f.id) === num);
   }
 
-  // If not curated or not found via numeric id, fall back to matching by label.
   if (!feature) {
     feature = featureCollection.features.find(
       (f) => f.properties?.name === name,
@@ -994,7 +787,6 @@ acDrop.addEventListener("click", (e) => {
 
   const centroid = d3.geoCentroid(feature);
 
-  // Curated: use rich tooltip; otherwise a generic enquiry card.
   const showDetails = curated
     ? () => {
         showTooltip(name);
@@ -1005,43 +797,54 @@ acDrop.addEventListener("click", (e) => {
         setHighlightByNumericId(String(feature.id));
       };
 
-  if (currentView === "globe") {
-    rotateTo([-centroid[0], -centroid[1], 0], showDetails);
-  } else {
-    showDetails();
-  }
+  rotateTo([-centroid[0], -centroid[1], 0], showDetails);
 });
 
 document.addEventListener("click", (e) => {
-  // Close autocomplete when clicking outside the search wrapper
   if (!e.target.closest(".dest-search-wrap")) acDrop.classList.remove("open");
-
-  // Click-away: hide the tooltip when clicking anywhere except the tooltip itself.
-  // Country clicks call stopPropagation(), so they won't immediately close it.
-  // This allows clicking on the "ocean"/background of the globe/map to dismiss.
   const inTooltip = e.target.closest("#map-tooltip");
   if (!inTooltip) hideTooltip();
+});
+
+/* ══════════════════════ CONTACT FORM — MAILTO ══════════════════════ */
+document.getElementById("form-submit-btn").addEventListener("click", () => {
+  const name = (document.getElementById("form-name").value || "").trim();
+  const email = (document.getElementById("form-email").value || "").trim();
+  const destination = (
+    document.getElementById("form-destination").value || ""
+  ).trim();
+  const message = (document.getElementById("form-message").value || "").trim();
+
+  const subject =
+    name && destination
+      ? `${name} — ${destination}`
+      : name || destination || "Travel Enquiry";
+
+  const body = message || "(No message provided)";
+
+  const mailto = `mailto:pat@twctravels.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
 });
 
 /* ══════════════════════ FALLBACK (if no CDN) ══════════════════════ */
 function showFallbackMap() {
   globeContainer.innerHTML = `
-       <div style="
-         width:100%; height:100%;
-         display:flex; flex-direction:column;
-         align-items:center; justify-content:center;
-         color:rgba(201,149,106,0.4); gap:16px;
-         font-family:'Cormorant Garamond',serif;
-       ">
-         <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="rgba(201,149,106,0.4)" stroke-width="0.8">
-           <circle cx="12" cy="12" r="10"/>
-           <line x1="2" y1="12" x2="22" y2="12"/>
-           <path d="M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/>
-         </svg>
-         <span style="font-size:1.1rem; letter-spacing:0.2em;">Globe requires network access</span>
-         <span style="font-size:0.75rem; font-family:Jost,sans-serif; letter-spacing:0.1em; color:rgba(201,149,106,0.25);">Please connect to the internet to load the interactive globe</span>
-       </div>
-     `;
+          <div style="
+            width:100%; height:100%;
+            display:flex; flex-direction:column;
+            align-items:center; justify-content:center;
+            color:rgba(201,149,106,0.4); gap:16px;
+            font-family:'Cormorant Garamond',serif;
+          ">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="rgba(201,149,106,0.4)" stroke-width="0.8">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/>
+            </svg>
+            <span style="font-size:1.1rem; letter-spacing:0.2em;">Globe requires network access</span>
+            <span style="font-size:0.75rem; font-family:Jost,sans-serif; letter-spacing:0.1em; color:rgba(201,149,106,0.25);">Please connect to the internet to load the interactive globe</span>
+          </div>
+        `;
 }
 
 /* ══════════════════════ TESTIMONIAL SLIDER ══════════════════════ */

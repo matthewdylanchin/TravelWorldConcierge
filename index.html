@@ -120,44 +120,10 @@
               />
               <div class="autocomplete-drop" id="ac-drop"></div>
             </div>
-            <div class="view-toggle">
-              <button class="view-btn active" id="btn-globe" data-view="globe">
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="2" y1="12" x2="22" y2="12" />
-                  <path d="M12 2a15 15 0 010 20M12 2a15 15 0 000 20" />
-                </svg>
-                Globe
-              </button>
-              <button class="view-btn" id="btn-map" data-view="map">
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                >
-                  <polygon
-                    points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"
-                  />
-                  <line x1="8" y1="2" x2="8" y2="18" />
-                  <line x1="16" y1="6" x2="16" y2="22" />
-                </svg>
-                Map
-              </button>
-            </div>
           </div>
         </div>
 
-        <!-- Globe / Map container -->
+        <!-- Globe container -->
         <div class="globe-map-stage" id="globe-map-stage">
           <div id="globe-container"></div>
           <div id="map-tooltip" class="map-tooltip hidden">
@@ -487,7 +453,7 @@
                     come close to the level of personal attention and care that
                     Travel World Concierge delivers on every single trip.
                   </p>
-                  <div class="testi-author">Dato' Ahmad Rizal</div>
+                  <div class="testi-author">James Whitfield</div>
                   <div class="testi-origin">
                     Kuala Lumpur · European Grand Tour
                   </div>
@@ -566,7 +532,7 @@
                 <div>
                   <div class="cd-label">Phone</div>
                   <div class="cd-value">
-                    +60 16-888 6868<br />+60 82-253 404
+                    +60 16-888 6868<br />+60 16-858 1133<br />+60 82-253 404
                   </div>
                 </div>
               </div>
@@ -619,20 +585,26 @@
             <div class="form-row">
               <div class="form-field">
                 <label class="form-label">Full Name</label>
-                <input type="text" class="form-input" placeholder="Your name" />
+                <input
+                  type="text"
+                  class="form-input"
+                  id="form-name"
+                  placeholder="Your name"
+                />
               </div>
               <div class="form-field">
                 <label class="form-label">Email Address</label>
                 <input
                   type="email"
                   class="form-input"
+                  id="form-email"
                   placeholder="your@email.com"
                 />
               </div>
             </div>
             <div class="form-field">
               <label class="form-label">Destination</label>
-              <select class="form-select">
+              <select class="form-select" id="form-destination">
                 <option value="" disabled selected>Select a destination</option>
                 <option>Europe</option>
                 <option>Southeast Asia</option>
@@ -649,10 +621,13 @@
               <label class="form-label">Message</label>
               <textarea
                 class="form-textarea"
+                id="form-message"
                 placeholder="Tell us about your dream journey…"
               ></textarea>
             </div>
-            <button class="form-submit">Speak to a Concierge</button>
+            <button class="form-submit" id="form-submit-btn">
+              Speak to a Concierge
+            </button>
           </div>
         </div>
       </div>
@@ -716,6 +691,7 @@
             <ul class="footer-links">
               <li><a href="tel:+60168886868">+60 16-888 6868</a></li>
               <li><a href="tel:+60822534040">+60 82-253 404</a></li>
+              <li><a href="tel:+60168581133">+60 16-858 1133</a></li>
               <li><a href="mailto:pat@twctravels.com">Email Us</a></li>
               <li><a href="#">WhatsApp</a></li>
             </ul>
@@ -807,7 +783,7 @@
       </a>
     </div>
 
-    <!-- D3.js for the globe/map -->
+    <!-- D3.js for the globe -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
     <script src="main.js"></script>
