@@ -560,7 +560,7 @@ function buildD3Scene() {
       })
       .on("end", function () {
         dragStart = null;
-        startAutoRotate();
+        if (activeRegion === "all") startAutoRotate();
       }),
   );
 
@@ -627,7 +627,10 @@ function rotateTo(target, callback) {
       requestAnimationFrame(step);
     } else {
       if (callback) callback();
-      setTimeout(startAutoRotate, 350);
+      // Only resume auto-rotation if no region is pinned (callback handles freeze for regions)
+      if (activeRegion === "all") {
+        setTimeout(startAutoRotate, 350);
+      }
     }
   }
   requestAnimationFrame(step);
@@ -668,9 +671,146 @@ function hideTooltip() {
   clearHighlight();
 }
 
+/* Map every country name (curated + generic) to the closest dropdown option */
+const COUNTRY_TO_DROPDOWN = {
+  // Europe
+  France: "Europe",
+  Italy: "Europe",
+  Greece: "Europe",
+  Switzerland: "Europe",
+  Germany: "Europe",
+  Spain: "Europe",
+  Portugal: "Europe",
+  Netherlands: "Europe",
+  Belgium: "Europe",
+  Austria: "Europe",
+  Sweden: "Europe",
+  Norway: "Europe",
+  Denmark: "Europe",
+  Finland: "Europe",
+  Poland: "Europe",
+  Croatia: "Europe",
+  "Czech Republic": "Europe",
+  Hungary: "Europe",
+  Romania: "Europe",
+  Bulgaria: "Europe",
+  Ireland: "Europe",
+  Slovakia: "Europe",
+  Ukraine: "Europe",
+  "United Kingdom": "Europe",
+  Russia: "Europe",
+  // Southeast Asia
+  Thailand: "Southeast Asia",
+  Bali: "Southeast Asia",
+  Indonesia: "Southeast Asia",
+  Malaysia: "Southeast Asia",
+  Philippines: "Southeast Asia",
+  Vietnam: "Southeast Asia",
+  Cambodia: "Southeast Asia",
+  Laos: "Southeast Asia",
+  Myanmar: "Southeast Asia",
+  Singapore: "Southeast Asia",
+  // Japan & East Asia
+  Japan: "Japan & East Asia",
+  China: "Japan & East Asia",
+  "South Korea": "Japan & East Asia",
+  Taiwan: "Japan & East Asia",
+  "North Korea": "Japan & East Asia",
+  // Middle East
+  UAE: "Middle East",
+  Qatar: "Middle East",
+  "Saudi Arabia": "Middle East",
+  Jordan: "Middle East",
+  Israel: "Middle East",
+  Lebanon: "Middle East",
+  Kuwait: "Middle East",
+  Bahrain: "Middle East",
+  Oman: "Middle East",
+  Iraq: "Middle East",
+  Iran: "Middle East",
+  Syria: "Middle East",
+  Yemen: "Middle East",
+  // Africa & Safari
+  "South Africa": "Africa & Safari",
+  Morocco: "Africa & Safari",
+  Kenya: "Africa & Safari",
+  Egypt: "Africa & Safari",
+  Tanzania: "Africa & Safari",
+  Ethiopia: "Africa & Safari",
+  Ghana: "Africa & Safari",
+  Nigeria: "Africa & Safari",
+  Senegal: "Africa & Safari",
+  Uganda: "Africa & Safari",
+  Mozambique: "Africa & Safari",
+  Zimbabwe: "Africa & Safari",
+  Zambia: "Africa & Safari",
+  "Sierra Leone": "Africa & Safari",
+  Somalia: "Africa & Safari",
+  Sudan: "Africa & Safari",
+  Libya: "Africa & Safari",
+  Algeria: "Africa & Safari",
+  Angola: "Africa & Safari",
+  Cameroon: "Africa & Safari",
+  // Maldives & Indian Ocean
+  Maldives: "Maldives & Indian Ocean",
+  "Sri Lanka": "Maldives & Indian Ocean",
+  // Americas
+  "United States": "Americas",
+  Canada: "Americas",
+  Mexico: "Americas",
+  Brazil: "Americas",
+  Argentina: "Americas",
+  Colombia: "Americas",
+  Peru: "Americas",
+  Chile: "Americas",
+  Venezuela: "Americas",
+  Ecuador: "Americas",
+  Bolivia: "Americas",
+  Uruguay: "Americas",
+  Panama: "Americas",
+  "Costa Rica": "Americas",
+  Cuba: "Americas",
+  Jamaica: "Americas",
+  Haiti: "Americas",
+  Guatemala: "Americas",
+  Honduras: "Americas",
+  "El Salvador": "Americas",
+  "Puerto Rico": "Americas",
+  // Australia & Pacific
+  Australia: "Australia & Pacific",
+  "New Zealand": "Australia & Pacific",
+  // Asia Pacific catch-all
+  India: "Southeast Asia",
+  Nepal: "Southeast Asia",
+  Bhutan: "Southeast Asia",
+  Bangladesh: "Southeast Asia",
+  Pakistan: "Southeast Asia",
+  Kazakhstan: "Southeast Asia",
+  Tajikistan: "Southeast Asia",
+  Uzbekistan: "Southeast Asia",
+};
+
 tooltipClose.addEventListener("click", hideTooltip);
 tooltipCTA.addEventListener("click", () => {
+  const country = tooltipCountry.textContent || "";
   hideTooltip();
+
+  // Auto-select the matching dropdown option
+  const destSelect = document.getElementById("form-destination");
+  const dropdownValue = COUNTRY_TO_DROPDOWN[country];
+  if (destSelect && dropdownValue) {
+    destSelect.value = dropdownValue;
+  }
+
+  // Pre-fill the message with the specific country name
+  const msgField = document.getElementById("form-message");
+  if (msgField && country) {
+    const prefix = `Destination: ${country}\n\n`;
+    if (!msgField.value.startsWith(prefix)) {
+      msgField.value = prefix;
+    }
+  }
+
   document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
 });
 
@@ -705,6 +845,17 @@ function clearHighlight() {
 }
 
 /* ══════════════════════ REGION FILTER ══════════════════════ */
+
+/* Globe centre coordinates [lon, lat] for each region */
+const REGION_CENTRES = {
+  EU: [-10, 50], // Europe
+  AS: [100, 20], // Asia Pacific
+  ME: [45, 25], // Middle East
+  AF: [20, 5], // Africa
+  AM: [-80, 10], // Americas
+  OC: [140, -25], // Oceania
+};
+
 function filterByRegion(region) {
   activeRegion = region;
   if (!g) return;
@@ -713,6 +864,8 @@ function filterByRegion(region) {
     g.selectAll(".country-path")
       .classed("dimmed", false)
       .classed("highlighted", false);
+    // Resume auto-rotation
+    startAutoRotate();
     return;
   }
 
@@ -725,6 +878,15 @@ function filterByRegion(region) {
   g.selectAll(".country-path")
     .classed("highlighted", (d) => codesInRegion.has(String(d.id)))
     .classed("dimmed", (d) => !codesInRegion.has(String(d.id)));
+
+  // Rotate globe to region centre then freeze
+  const centre = REGION_CENTRES[region];
+  if (centre) {
+    rotateTo([-centre[0], -centre[1], 0], () => {
+      // After arriving, stop auto-rotation so it stays focused on the region
+      stopAutoRotate();
+    });
+  }
 }
 
 destPills.forEach((pill) => {
